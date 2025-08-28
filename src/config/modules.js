@@ -103,15 +103,5 @@ export const modules = [
             "Realize análises estratégicas de currículos com base em vagas específicas. Receba relatórios profissionais que avaliam a aderência do candidato, destacam pontos fortes e oportunidades de melhoria, e ajudam a tomar decisões mais assertivas no recrutamento.",
         shortDescription:
             "Avalie o alinhamento entre currículos e vagas com inteligência.",
-    },
-    {
-        title: "Comparador de Candidatos",
-        url: "/dashboard/candidate-comparator",
-        icon: Users,
-        category: "Comparação de Candidatos",
-        description:
-            "Realize análises estratégicas de currículos com base em uma vaga. Compare múltiplos candidatos e receba relatórios precisos para decisões mais eficazes.",
-        shortDescription:
-            "Compare candidatos de forma estratégica para decisões assertivas.",
-    },
+    }
 ];

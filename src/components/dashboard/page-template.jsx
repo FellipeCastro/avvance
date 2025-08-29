@@ -15,9 +15,9 @@ export default function PageTemplate({
 
       <p className="opacity-80 w-3xl mb-6">{description}</p>
 
-      {children}
-
       {error && <p className="text-red-500 mt-4">Erro: {error}</p>}
+      
+      {children}
     </div>
   );
 }

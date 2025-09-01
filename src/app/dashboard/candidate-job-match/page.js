@@ -5,11 +5,10 @@ import { useJobForm } from "@/hooks/use-job-form";
 
 import { FileHeart } from "lucide-react";
 
-import { Card } from "@/components/ui/card";
-
+import PageTemplate from "@/components/dashboard/page-template";
 import FileInput from "@/components/file-input";
-import MarkdownComponent from "@/components/ui/markdown-component";
 import JobForm from "@/components/job-form";
+import AiOutput from "@/components/dashboard/ai-output";
 
 export default function Page() {
   const { register, handleSubmit, errors, isSubmitting, onReset } =
@@ -18,12 +17,6 @@ export default function Page() {
   const [file, setFile] = useState(null);
   const [output, setOutput] = useState(null);
   const [error, setError] = useState(null);
-
-  const handleFileChange = (event) => {
-    if (event.target.files) {
-      setFile(event.target.files[0]);
-    }
-  };
 
   const onSubmit = async (data) => {
     if (!file) {
@@ -58,21 +51,15 @@ export default function Page() {
   };
 
   return (
-    <>
-      <h1 className="flex items-center gap-3 text-3xl font-bold mb-1">
-        <FileHeart color={"#2b7fff"} /> Match de Candidato x Vaga
-      </h1>
-
-      <p className="text-muted-foreground w-3xl">
-        Realize análises estratégicas de currículos com base em vagas
-        específicas. Receba relatórios profissionais que avaliam a aderência do
-        candidato, destacam pontos fortes e oportunidades de melhoria, e ajudam
-        a tomar decisões mais assertivas no recrutamento.
-      </p>
-
-      <FileInput handleFileChange={handleFileChange}>
-        Adicionar currículo do candidato
-      </FileInput>
+    <PageTemplate
+      title={"Match de Candidato x Vaga"}
+      icon={<FileHeart />}
+      description={
+        "Realize análises estratégicas de currículos com base em vagas específicas. Receba relatórios profissionais que avaliam a aderência do candidato, destacam pontos fortes e oportunidades de melhoria, e ajudam a tomar decisões mais assertivas no recrutamento."
+      }
+      error={error}
+    >
+      <FileInput setFile={setFile} />
 
       <JobForm
         register={register}
@@ -83,13 +70,7 @@ export default function Page() {
         onReset={onReset}
       />
 
-      {error && <p className="text-red-500 mt-4">Erro: {error}</p>}
-
-      {output && (
-        <Card className="p-8">
-          <MarkdownComponent>{output}</MarkdownComponent>
-        </Card>
-      )}
-    </>
+      <AiOutput output={output} />
+    </PageTemplate>
   );
 }

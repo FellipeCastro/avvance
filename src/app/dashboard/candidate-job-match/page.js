@@ -6,7 +6,7 @@ import { useJobForm } from "@/hooks/use-job-form";
 import { FileHeart } from "lucide-react";
 
 import PageTemplate from "@/components/dashboard/page-template";
-import FileInput from "@/components/file-input";
+import FileInput from "@/components/ui/file-input";
 import JobForm from "@/components/job-form";
 import AiOutput from "@/components/dashboard/ai-output";
 
@@ -32,7 +32,7 @@ export default function Page() {
     formData.append("job", JSON.stringify(data));
 
     try {
-      const response = await fetch("/api/cv/candidate-job-match", {
+      const response = await fetch("/api/modules/candidate-job-match", {
         method: "POST",
         body: formData,
       });

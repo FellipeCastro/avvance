@@ -4,7 +4,7 @@ import { Bookmark, Loader2 } from "lucide-react";
 
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
-import CopyButton from "../copy-button";
+import CopyButton from "../ui/copy-button";
 import MarkdownComponent from "../ui/markdown-component";
 
 export default function AiOutput({ output, file, setError }) {

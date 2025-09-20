@@ -51,7 +51,7 @@ export default function FileInput({ children, setFile }) {
         onClick={() => fileInputRef.current?.click()}
       >
         <Upload className="w-4 h-4 mr-1" />
-        {children ? children : "Selecionar Arquivo"}
+        {children ? children : "Selecionar Arquivo PDF"}
       </Button>
 
       {fileName && <p className="text-sm text-gray-500 mt-2.5">{fileName}</p>}

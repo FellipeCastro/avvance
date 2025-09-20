@@ -16,7 +16,7 @@ import {
 
 import { Bookmark, Home } from "lucide-react";
 
-import { ModeToggle } from "./mode-toggle";
+import { ModeToggle } from "./ui/mode-toggle";
 import NavUser from "./nav-user";
 import ClientOnly from "./ui/client-only";
 

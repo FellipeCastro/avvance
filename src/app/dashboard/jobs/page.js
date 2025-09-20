@@ -20,7 +20,7 @@ import {
 import { sortByRelevance } from "@/lib/utils";
 
 import PageTemplate from "@/components/dashboard/page-template";
-import SubmitButton from "@/components/submit-button";
+import SubmitButton from "@/components/ui/submit-button";
 import JobCard from "@/components/job-card";
 
 export default function Page() {
@@ -59,7 +59,7 @@ export default function Page() {
 
     try {
       setLoading(true);
-      const response = await fetch("/api/jobs/jobspy/", {
+      const response = await fetch("/api/modules/jobs/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

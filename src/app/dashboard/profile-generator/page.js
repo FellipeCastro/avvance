@@ -20,7 +20,7 @@ export default function Page() {
     setOutput(null);
 
     try {
-      const response = await fetch("/api/profile-generator", {
+      const response = await fetch("/api/modules/profile-generator", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

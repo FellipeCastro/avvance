@@ -5,8 +5,8 @@ import { useState } from "react";
 import { TextSearch } from "lucide-react";
 
 import PageTemplate from "@/components/dashboard/page-template";
-import FileInput from "@/components/file-input";
-import SubmitButton from "@/components/submit-button";
+import FileInput from "@/components/ui/file-input";
+import SubmitButton from "@/components/ui/submit-button";
 import AiOutput from "@/components/dashboard/ai-output";
 
 export default function Page() {
@@ -24,7 +24,7 @@ export default function Page() {
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await fetch("/api/cv/analyzer", {
+      const response = await fetch("/api/modules/analyzer", {
         method: "POST",
         body: formData,
       });

@@ -5,8 +5,8 @@ import { useState } from "react";
 import { User } from "lucide-react";
 
 import PageTemplate from "@/components/dashboard/page-template";
-import SubmitButton from "@/components/submit-button";
-import FileInput from "@/components/file-input";
+import SubmitButton from "@/components/ui/submit-button";
+import FileInput from "@/components/ui/file-input";
 import AiOutput from "@/components/dashboard/ai-output";
 
 export default function Page() {
@@ -24,7 +24,7 @@ export default function Page() {
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await fetch("/api/linkedin-generator", {
+      const response = await fetch("/api/modules/linkedin-generator", {
         method: "POST",
         body: formData,
       });

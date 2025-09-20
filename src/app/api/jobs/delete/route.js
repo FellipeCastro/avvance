@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabaseClient } from "@/lib/supabase";
+import { getBrowserClient } from "@/lib/supabase/browser";
 import { auth } from "@clerk/nextjs/server";
 
 export async function DELETE(req) {
@@ -19,7 +19,7 @@ export async function DELETE(req) {
         }
 
         const token = await getToken({ template: "supabase" });
-        const supabase = supabaseClient(token);
+        const supabase = getBrowserClient(token);
 
         const columnName = typeof id === "number" ? "id" : "job_id";
 

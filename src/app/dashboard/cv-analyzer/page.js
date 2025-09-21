@@ -29,7 +29,7 @@ export default function Page() {
         body: formData,
       });
 
-      if (!response.ok) {
+      if (!response.ok) { 
         throw new Error("Erro no upload ou análise");
       }
 

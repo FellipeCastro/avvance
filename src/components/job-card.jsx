@@ -30,7 +30,7 @@ import { Link2, Trash2, Star } from "lucide-react";
 import MarkdownComponent from "@/components/ui/markdown-component";
 import Loader from "./ui/loader";
 
-const JobCardHeader = ({ job, saved }) => (
+const JobCardHeader = ({ job }) => (
   <CardHeader>
     <CardTitle>{job.title}</CardTitle>
   </CardHeader>
@@ -48,12 +48,6 @@ const JobCardContent = ({ job }) => (
       </p>
     </div>
   </CardContent>
-);
-
-const JobCardFooter = ({ job }) => (
-  <CardFooter className="mt-auto flex flex-wrap justify-between items-center">
-    <JobLink url={job.job_url} />
-  </CardFooter>
 );
 
 const JobLink = ({ url }) => (
@@ -136,27 +130,7 @@ const DeleteButton = ({ loading, onDelete }) => (
   </Dialog>
 );
 
-const JobDetails = ({ job }) => (
-  <div className="space-y-6 text-sm text-muted-foreground">
-    <div className="space-y-2">
-      <p className="flex items-center gap-2 font-bold">
-        🏢
-        {job.company}
-      </p>
-      <p className="flex items-center gap-2">
-        📍
-        {job.location || "Não informada"}
-      </p>
-      <p className="mt-3 text-zinc-400">
-        {job.date_posted || "Data não informada"}
-      </p>
-    </div>
-
-    <MarkdownComponent>{job.description}</MarkdownComponent>
-  </div>
-);
-
-export default function JobCard({ job, onDelete, isSaved }) {
+export default function JobCard({ job, onDelete, isSaved, children }) {
   const [saved, setSaved] = useState(isSaved);
   const [state, setState] = useState({
     loading: false,
@@ -242,14 +216,17 @@ export default function JobCard({ job, onDelete, isSaved }) {
     <Dialog>
       <DialogTrigger asChild>
         <Card
-          className={`gap-3 cursor-pointer hover:translate-x-0.5 hover:-translate-y-0.5 ${
+          className={`relative gap-3 cursor-pointer hover:translate-x-0.5 hover:-translate-y-0.5 ${
             saved ? "border-orange-300" : ""
           }`}
         >
           <JobCardHeader job={job} saved={saved} />
           <Separator className="mb-1" />
           <JobCardContent job={job} />
-          <JobCardFooter job={job} />
+          <CardFooter className="mt-auto flex flex-wrap justify-between items-center">
+            <JobLink url={job.job_url} />
+            {children}
+          </CardFooter>
         </Card>
       </DialogTrigger>
 
@@ -281,7 +258,23 @@ export default function JobCard({ job, onDelete, isSaved }) {
 
             <Separator />
 
-            <JobDetails job={job} />
+            <div className="space-y-6 text-sm text-muted-foreground">
+              <div className="space-y-2">
+                <p className="flex items-center gap-2 font-bold">
+                  🏢
+                  {job.company}
+                </p>
+                <p className="flex items-center gap-2">
+                  📍
+                  {job.location || "Não informada"}
+                </p>
+                <p className="mt-3 text-zinc-400">
+                  {job.date_posted || "Data não informada"}
+                </p>
+              </div>
+
+              <MarkdownComponent>{job.description}</MarkdownComponent>
+            </div>
           </div>
         </ScrollArea>
       </DialogContent>

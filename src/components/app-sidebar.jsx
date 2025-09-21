@@ -21,17 +21,17 @@ import NavUser from "./nav-user";
 import ClientOnly from "./ui/client-only";
 
 export async function AppSidebar() {
-  // const user = await currentUser();
+  const user = await currentUser();
 
-  // if (!user) {
-  //   return <h1>Você não tem permissão para acessar esta página.</h1>;
-  // }
+  if (!user) {
+    return <h1>Você não tem permissão para acessar esta página.</h1>;
+  }
 
-  // const userData = {
-  //   name: user.fullName || "Usuário",
-  //   email: user.primaryEmailAddress?.emailAddress || "sem-email@example.com",
-  //   avatar: user.imageUrl,
-  // };
+  const userData = {
+    name: user.fullName || "Usuário",
+    email: user.primaryEmailAddress?.emailAddress || "sem-email@example.com",
+    avatar: user.imageUrl,
+  };
 
   return (
     <Sidebar className="p-3 w-fit overflow-hidden">
@@ -44,10 +44,13 @@ export async function AppSidebar() {
             <SidebarGroupContent>
               <SidebarMenu className="gap-2">
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild className={"transition duration-200 hover:bg-white/20"}>
+                  <SidebarMenuButton
+                    asChild
+                    className={"transition duration-200 hover:bg-white/20"}
+                  >
                     <Link
                       href={"/dashboard"}
-                      className="flex items-center gap-3 "
+                      className="flex items-center"
                     >
                       <span className="text-blue-700 flex justify-center items-center">
                         <Home size={16} />
@@ -59,7 +62,10 @@ export async function AppSidebar() {
                 {modules.map((module) => {
                   return (
                     <SidebarMenuItem className={""} key={module.title}>
-                      <SidebarMenuButton asChild className={"transition duration-200 hover:bg-white/20"}>
+                      <SidebarMenuButton
+                        asChild
+                        className={"transition duration-200 hover:bg-white/20"}
+                      >
                         <Link
                           href={module.url}
                           className="flex items-center text-sm "
@@ -67,7 +73,7 @@ export async function AppSidebar() {
                           <span className="text-blue-700 flex justify-center items-center">
                             <module.icon size={16} />
                           </span>
-                          
+
                           {module.title}
                         </Link>
                       </SidebarMenuButton>
@@ -75,11 +81,13 @@ export async function AppSidebar() {
                   );
                 })}
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild className={"transition duration-200 hover:bg-white/20"}>
+                  <SidebarMenuButton
+                    asChild
+                    className={"transition duration-200 hover:bg-white/20"}
+                  >
                     <Link
                       href={"/dashboard/saved"}
-                      className="flex items-center gap-3 "
-                    >
+                      className="text-sm flex items-center"                    >
                       <span className="text-blue-700 flex justify-center items-center">
                         <Bookmark size={16} />
                       </span>
@@ -95,7 +103,7 @@ export async function AppSidebar() {
           <ClientOnly>
             <ModeToggle />
           </ClientOnly>
-          {/* <NavUser user={userData} /> */}
+          <NavUser user={userData} />
         </SidebarFooter>
       </div>
     </Sidebar>

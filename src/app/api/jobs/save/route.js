@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
 import { getBrowserClient } from "@/lib/supabase/browser";
-import { requireAuth } from "@/lib/authHelper";
+import { auth } from "@clerk/nextjs/server";
 
 export async function POST(req) {
   try {
     const { job_url, id, description, title, date_posted, company, location } =
       await req.json();
 
-    const { userId, token } = await requireAuth();
+    const { userId, getToken } = await auth(req);
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "Usuário não autenticado" },
+        { status: 401 }
+      );
+    }
 
     if (!title || !id || !company || !job_url) {
       return NextResponse.json(
@@ -19,6 +26,7 @@ export async function POST(req) {
       );
     }
 
+    const token = await getToken({ template: "supabase" });
     const supabase = getBrowserClient(token);
 
     const { data, error } = await supabase
@@ -39,6 +47,7 @@ export async function POST(req) {
       .single();
 
     if (error) {
+      console.log(error);
       return NextResponse.json(
         { error: `Erro ao criar job: ${error.message}` },
         { status: 400 }
@@ -47,6 +56,7 @@ export async function POST(req) {
 
     return NextResponse.json(data, { status: 201 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: "Erro ao processar requisição" },
       { status: 500 }

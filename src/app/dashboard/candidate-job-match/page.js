@@ -9,6 +9,7 @@ import PageTemplate from "@/components/dashboard/page-template";
 import FileInput from "@/components/ui/file-input";
 import JobForm from "@/components/job-form";
 import AiOutput from "@/components/dashboard/ai-output";
+import SavedJobs from "@/components/saved-jobs";
 
 export default function Page() {
   const { register, handleSubmit, errors, isSubmitting, onReset } =
@@ -60,6 +61,8 @@ export default function Page() {
       error={error}
     >
       <FileInput setFile={setFile} />
+
+      <SavedJobs />
 
       <JobForm
         register={register}

@@ -10,7 +10,7 @@ export default function Layout({ children }) {
         <SidebarProvider>
             <AppSidebar />
             <div>
-                <SidebarTrigger className="mt-4 ml-4" />
+                <SidebarTrigger className="mt-4 ml-8" />
                 <main className="p-12 min-h-screen flex flex-col gap-8 ml-4">
                     {children}
                 </main>

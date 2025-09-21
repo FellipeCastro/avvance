@@ -21,12 +21,12 @@ export function ModeToggle() {
                 <Button variant="ghost">
                     {resolvedTheme === "dark" ? (
                         <>
-                            <Moon className="h-[1.2rem] w-[1.2rem] transition-all" />
+                            <Moon className="h-[1.2rem] w-[1.2rem] transition-all text-gray-300" />
                             Modo escuro
                         </>
                     ) : (
                         <>
-                            <Sun className="h-[1.2rem] w-[1.2rem] transition-all " />
+                            <Sun className="h-[1.2rem] w-[1.2rem] transition-all text-orange-400" />
                             Modo claro
                         </>
                     )}

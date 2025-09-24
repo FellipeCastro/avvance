@@ -87,7 +87,7 @@ export default function Page() {
           </div>
         </SignedIn>
 
-        <section className="grid grid-cols-3 justify-center gap-4">
+        <section className="w-3xl grid grid-cols-3 justify-center gap-4">
           {modules.map((module) => (
             <Card key={module.title}>
               <CardHeader className="space-y-1">

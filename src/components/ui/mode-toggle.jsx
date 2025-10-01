@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { Check, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -14,6 +14,12 @@ import {
 
 export function ModeToggle() {
   const { setTheme, theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Wait until after the component mounts to avoid hydration issues
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <DropdownMenu>
@@ -22,7 +28,9 @@ export function ModeToggle() {
         asChild
       >
         <Button variant="ghost">
-          {resolvedTheme === "dark" ? (
+          {!mounted ? (
+            <span className="sr-only">Toggle theme</span>
+          ) : resolvedTheme === "dark" ? (
             <>
               <Moon className="h-[1.2rem] w-[1.2rem] transition-all text-gray-300" />
               Modo escuro
@@ -33,18 +41,17 @@ export function ModeToggle() {
               Modo claro
             </>
           )}
-          <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          Claro{theme === "light" && <Check />}
+          Claro {theme === "light" && <Check />}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Escuro{theme === "dark" && <Check />}
+          Escuro {theme === "dark" && <Check />}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
-          Sistema{theme === "system" && <Check />}
+          Sistema {theme === "system" && <Check />}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

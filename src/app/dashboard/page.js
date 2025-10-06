@@ -49,7 +49,7 @@ export default function Page() {
         <h1 className="flex items-center gap-3 text-3xl font-bold">
           👋 Olá, {user.firstName || "Usuário"}!
         </h1>
-        <p className="flex items-center gap-2 text-sm text-muted-foreground">
+        <p className="flex items-center gap-2 text-sm text-purple-400">
           <Mail size={15} /> {user.primaryEmailAddress.emailAddress}
         </p>
       </div>
@@ -79,7 +79,7 @@ export default function Page() {
             />
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
-            <Bar dataKey="usage" fill="var(--color-usage)" radius={4} />
+            <Bar dataKey="usage" fill="#AB47BC" radius={4} />
           </BarChart>
         </ChartContainer>
       </section>

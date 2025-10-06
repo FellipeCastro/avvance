@@ -218,7 +218,7 @@ function Sidebar({
       >
         <div
           data-sidebar="sidebar"
-          className="rounded-lg bg-gradient-to-b from-blue-600/60 to-transparent  group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+          className="rounded-lg border border-dashed transition duration-200 hover:border-purple-500 group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
         >
           {children}
         </div>

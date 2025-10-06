@@ -57,7 +57,7 @@ const JobLink = ({ url }) => (
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="group w-fit flex justify-center items-center gap-2 text-blue-400 text-sm"
+        className="group w-fit flex justify-center items-center gap-2 text-purple-400 text-sm"
       >
         <Link2
           size={18}

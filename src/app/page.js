@@ -1,15 +1,12 @@
 "use client";
 
-import Image from "next/image";
+import { motion } from "framer-motion";
+
+import { Card } from "@/components/ui/card";
+import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { modules } from "@/config/modules";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ModeToggle } from "@/components/ui/mode-toggle";
@@ -23,10 +20,7 @@ import {
   Rocket,
 } from "lucide-react";
 
-import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
-import { motion } from "framer-motion";
-
-import { modules } from "@/config/modules";
+import ModuleCard from "@/components/module-card";
 
 export default function LandingPage() {
   const { isSignedIn } = useUser();
@@ -157,20 +151,8 @@ export default function LandingPage() {
         </div>
 
         <div className="mt-7 max-w-6xl grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {modules.map((m) => (
-            <Card key={m.title} className={"gap-2"}>
-              <CardHeader>
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-900/40">
-                  <m.icon className="text-purple-500" size={24} />
-                </div>
-                <CardTitle>{m.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  {m.shortDescription}
-                </p>
-              </CardContent>
-            </Card>
+          {modules.map((module) => (
+            <ModuleCard module={module} key={module.title} />
           ))}
         </div>
       </section>

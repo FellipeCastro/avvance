@@ -1,34 +1,44 @@
-import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-    CardDescription,
-    CardFooter,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "./ui/badge";
+  Dialog,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+} from "./ui/dialog";
 
 export default function ModuleCard({ module }) {
-    return (
-        <Card key={module.title}>
-            <CardHeader className="space-y-1">
-                <span className="text-blue-500">
-                    <module.icon size={18} />
-                </span>
-                <CardTitle>{module.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <CardDescription>{module.shortDescription}</CardDescription>
-            </CardContent>
-            <CardFooter className="flex gap-3 items-center mt-auto">
-                <Button variant="outline">
-                    <Link href={module.url}>Acessar</Link>
-                </Button>
-                <Badge variant="secondary" className="text-muted-foreground">{module.category}</Badge>
-            </CardFooter>
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <Card
+          key={module.title}
+          className={
+            "cursor-pointer text-left gap-2 transition duration-200 hover:border-purple-400 hover:translate-y-[-0.25rem]"
+          }
+        >
+          <CardHeader>
+            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-900/40">
+              <module.icon className="text-purple-500" size={24} />
+            </div>
+            <CardTitle>{module.title}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              {module.shortDescription}
+            </p>
+          </CardContent>
         </Card>
-    );
+      </DialogTrigger>
+
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{module.title}</DialogTitle>
+          <DialogDescription>{module.description}</DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
 }

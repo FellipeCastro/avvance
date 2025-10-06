@@ -38,7 +38,7 @@ export async function AppSidebar() {
       <div className="h-full rounded-lg flex flex-col justify-between overflow-hidden">
         <SidebarContent className="bg-transparent">
           <SidebarGroup>
-            <SidebarGroupLabel className="text-white">
+            <SidebarGroupLabel className="text-purple-400">
               TalentAI
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -48,11 +48,8 @@ export async function AppSidebar() {
                     asChild
                     className={"transition duration-200 hover:bg-white/20"}
                   >
-                    <Link
-                      href={"/dashboard"}
-                      className="flex items-center"
-                    >
-                      <span className="text-blue-700 flex justify-center items-center">
+                    <Link href={"/dashboard"} className="flex items-center">
+                      <span className="text-purple-400 flex justify-center items-center">
                         <Home size={16} />
                       </span>
                       Página Inicial
@@ -70,7 +67,7 @@ export async function AppSidebar() {
                           href={module.url}
                           className="flex items-center text-sm "
                         >
-                          <span className="text-blue-700 flex justify-center items-center">
+                          <span className="text-purple-400 flex justify-center items-center">
                             <module.icon size={16} />
                           </span>
 
@@ -87,8 +84,9 @@ export async function AppSidebar() {
                   >
                     <Link
                       href={"/dashboard/saved"}
-                      className="text-sm flex items-center"                    >
-                      <span className="text-blue-700 flex justify-center items-center">
+                      className="text-sm flex items-center"
+                    >
+                      <span className="text-purple-400 flex justify-center items-center">
                         <Bookmark size={16} />
                       </span>
                       Salvos

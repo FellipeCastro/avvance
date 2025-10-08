@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { getServiceRoleClient } from "@/lib/supabase/server";
 
 export async function POST(req) {
   try {

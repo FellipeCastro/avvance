@@ -2,56 +2,54 @@ import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(req) {
-    try {
-        console.log("📥 Recebendo dados...");
-        const formData = await req.formData();
+  try {
+    console.log("📥 Recebendo dados...");
+    const formData = await req.formData();
 
-        const files = formData.getAll("files");
-        
-        const jobData = formData.get("job");
+    const files = formData.getAll("files");
 
-        if (!files || files.length === 0 || !jobData) {
-            return NextResponse.json(
-                { error: "Arquivos ou dados da vaga ausentes." },
-                { status: 400 }
-            );
-        }
+    const jobData = formData.get("job");
 
-        const job = JSON.parse(jobData);
-        if (!job.title || !job.description) {
-            return NextResponse.json(
-                { error: "Informações da vaga incompletas." },
-                { status: 400 }
-            );
-        }
+    if (!files || files.length === 0 || !jobData) {
+      return NextResponse.json(
+        { error: "Arquivos ou dados da vaga ausentes." },
+        { status: 400 }
+      );
+    }
 
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) {
-            return NextResponse.json(
-                { error: "Chave da API Gemini não configurada." },
-                { status: 500 }
-            );
-        }
+    const job = JSON.parse(jobData);
+    if (!job.title || !job.description) {
+      return NextResponse.json(
+        { error: "Informações da vaga incompletas." },
+        { status: 400 }
+      );
+    }
 
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "Chave da API Gemini não configurada." },
+        { status: 500 }
+      );
+    }
 
-        // Converte todos os arquivos para base64
-        const candidatesData = await Promise.all(
-            files.map(async (file, idx) => {
-                const buffer = Buffer.from(await file.arrayBuffer()).toString(
-                    "base64"
-                );
-                return {
-                    fileBase64: buffer,
-                    index: idx + 1,
-                    filename: file.name,
-                };
-            })
-        );
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-        // Criação dinâmica do prompt
-        const prompt = `
+    // Converte todos os arquivos para base64
+    const candidatesData = await Promise.all(
+      files.map(async (file, idx) => {
+        const buffer = Buffer.from(await file.arrayBuffer()).toString("base64");
+        return {
+          fileBase64: buffer,
+          index: idx + 1,
+          filename: file.name,
+        };
+      })
+    );
+
+    // Criação dinâmica do prompt
+    const prompt = `
 Você é um analista de recrutamento experiente. Sua missão é comparar currículos de candidatos para uma vaga específica e determinar **qual é o melhor candidato**, com justificativas técnicas.
 
 ---
@@ -115,34 +113,34 @@ Recomendações para a empresa: ...
 ⚠️ Evite repetições, floreios ou elogios vazios. Seja direto, técnico e objetivo. A resposta será usada por recrutadores profissionais.
 `;
 
-        // Criação do conteúdo da requisição com os PDFs embutidos
-        const requestParts = [
-            {
-                role: "user",
-                parts: [
-                    { text: prompt },
-                    ...candidatesData.map((c) => ({
-                        inlineData: {
-                            mimeType: "application/pdf",
-                            data: c.fileBase64,
-                        },
-                    })),
-                ],
+    // Criação do conteúdo da requisição com os PDFs embutidos
+    const requestParts = [
+      {
+        role: "user",
+        parts: [
+          { text: prompt },
+          ...candidatesData.map((c) => ({
+            inlineData: {
+              mimeType: "application/pdf",
+              data: c.fileBase64,
             },
-        ];
+          })),
+        ],
+      },
+    ];
 
-        const result = await model.generateContent({
-            contents: requestParts,
-        });
+    const result = await model.generateContent({
+      contents: requestParts,
+    });
 
-        const output = await result.response.text();
+    const output = await result.response.text();
 
-        return NextResponse.json({ output }, { status: 200 });
-    } catch (error) {
-        console.error("❌ Erro ao processar análise:", error);
-        return NextResponse.json(
-            { error: "Erro ao processar a análise comparativa." },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json({ output }, { status: 200 });
+  } catch (error) {
+    console.error("❌ Erro ao processar análise:", error);
+    return NextResponse.json(
+      { error: "Erro ao processar a análise comparativa." },
+      { status: 500 }
+    );
+  }
 }

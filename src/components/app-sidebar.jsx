@@ -39,7 +39,7 @@ export async function AppSidebar() {
         <SidebarContent className="bg-transparent">
           <SidebarGroup>
             <SidebarGroupLabel className="text-purple-400">
-              TalentAI
+              Avvance
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="gap-2">

@@ -9,7 +9,7 @@ import {
 
 export async function GET(req) {
   try {
-    const { userId, getToken } = await auth(req);
+    const { userId, getToken } = await auth();
 
     if (!userId) {
       return NextResponse.json(
@@ -33,7 +33,7 @@ export async function GET(req) {
 
 export async function POST(req) {
   try {
-    const { userId, getToken } = await auth(req);
+    const { userId, getToken } = await auth();
 
     if (!userId) {
       return NextResponse.json(
@@ -70,7 +70,7 @@ export async function POST(req) {
 export async function DELETE(req) {
   try {
     const { id } = await req.json();
-    const { userId, getToken } = await auth(req);
+    const { userId, getToken } = await auth();
 
     if (!userId) {
       return NextResponse.json(

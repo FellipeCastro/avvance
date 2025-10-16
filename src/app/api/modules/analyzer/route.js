@@ -27,7 +27,7 @@ export async function POST(req) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `
 🎯 Você é um especialista sênior em Recursos Humanos, com forte atuação em Recrutamento, Seleção e Recolocação Profissional. Sua missão é **ler e interpretar o currículo anexado**, extraindo **informações estratégicas e detalhadas** sobre o profissional, **sem emitir julgamentos, notas ou avaliações numéricas**.

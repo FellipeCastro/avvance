@@ -2,29 +2,29 @@ import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(req) {
-    try {
-        const body = await req.json();
-        const { job } = body;
+  try {
+    const body = await req.json();
+    const { job } = body;
 
-        if (!job || !job.title || !job.description) {
-            return NextResponse.json(
-                { message: "Dados incompletos da vaga." },
-                { status: 400 }
-            );
-        }
+    if (!job || !job.title || !job.description) {
+      return NextResponse.json(
+        { message: "Dados incompletos da vaga." },
+        { status: 400 }
+      );
+    }
 
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) {
-            return NextResponse.json(
-                { message: "Chave da API Gemini não configurada." },
-                { status: 500 }
-            );
-        }
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json(
+        { message: "Chave da API Gemini não configurada." },
+        { status: 500 }
+      );
+    }
 
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-        const prompt = `
+    const prompt = `
 Você é um profissional especialista em Recursos Humanos, com sólida experiência em análise de perfis, recrutamento e construção de descrições realistas de candidatos para fins comparativos em processos seletivos.
 
 Sua tarefa é gerar um **perfil aderente e bem estruturado**, com base nas informações da vaga fornecida a seguir. O objetivo é criar um **modelo de referência confiável**, que represente com clareza e realismo **o tipo de candidato compatível e plenamente qualificado** para ocupar essa posição — sem exageros, idealizações ou descrições genéricas.
@@ -78,18 +78,18 @@ Descreva o cenário ideal de disponibilidade do candidato, conforme o modelo de 
 
 `;
 
-        const result = await model.generateContent({
-            contents: [{ role: "user", parts: [{ text: prompt }] }],
-        });
+    const result = await model.generateContent({
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+    });
 
-        const output = await result.response.text();
+    const output = await result.response.text();
 
-        return NextResponse.json({ response: output }, { status: 200 });
-    } catch (error) {
-        console.error("Erro na geração de perfil:", error);
-        return NextResponse.json(
-            { message: "Erro ao gerar perfil." },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json({ response: output }, { status: 200 });
+  } catch (error) {
+    console.error("Erro na geração de perfil:", error);
+    return NextResponse.json(
+      { message: "Erro ao gerar perfil." },
+      { status: 500 }
+    );
+  }
 }

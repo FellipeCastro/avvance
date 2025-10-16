@@ -1,10 +1,21 @@
 "use client";
 
+import { useClerk } from "@clerk/nextjs";
+
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  useUser,
+  UserButton,
+} from "@clerk/nextjs";
+
+import { modules } from "@/config/modules";
+
 import { motion } from "framer-motion";
 
 import { Card } from "@/components/ui/card";
-import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
-import { modules } from "@/config/modules";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,33 +32,54 @@ import {
 } from "lucide-react";
 
 import ModuleCard from "@/components/module-card";
+import Link from "next/link";
 
 export default function LandingPage() {
-  const { isSignedIn } = useUser();
+  const { openSignIn, openSignUp } = useClerk();
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-background">
-      {/* Topbar com Clerk */}
       <header>
-        <nav className="container mx-auto flex items-center justify-around px-5 py-3 border-b border-dashed  mt-7">
+        <nav className="container mx-auto flex items-center justify-around py-7 mt-7 bg-gradient-to-tr from-purple-400 to-background rounded-2xl">
           <h1 className="flex items-center gap-2 text-3xl font-bold mb-1">
             <span className="text-purple-400">
               <Sparkles size={25} />
             </span>
             Avvance
           </h1>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <ModeToggle />
-            <Button variant={"outline"}>Cadastre-se</Button>
-            <Button>
-              <LogIn /> Entrar
-            </Button>
+
+            <SignedOut>
+              <div className="flex gap-4">
+                <SignInButton mode="modal">
+                  <Button variant={"outline"}>
+                    <LogIn /> Entrar
+                  </Button>
+                </SignInButton>
+                <SignUpButton>
+                  <Button>Cadastre-se</Button>
+                </SignUpButton>
+              </div>
+            </SignedOut>
+
+            <SignedIn>
+              <div className="flex gap-3 items-center justify-center">
+                <UserButton />
+                <Link href="/dashboard">
+                  <Button>
+                    Ir para a plataforma
+                    <LogIn />
+                  </Button>
+                </Link>
+              </div>
+            </SignedIn>
           </div>
         </nav>
       </header>
 
       {/* Hero */}
-      <section className="container mx-auto px-6 py-12 flex flex-col md:flex-row items-center gap-8">
+      <section className="w-full container mx-auto px-6 py-12 flex flex-col md:flex-row items-center gap-8">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -73,11 +105,12 @@ export default function LandingPage() {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <Button className="px-6 py-3" variant="default">
+            <Button
+              className="px-6 py-3"
+              variant="default"
+              onClick={openSignUp}
+            >
               Experimente grátis
-            </Button>
-            <Button className="px-6 py-3" variant="outline">
-              Solicitar demonstração
             </Button>
           </div>
 
@@ -122,7 +155,7 @@ export default function LandingPage() {
 
               <div>
                 <Label className="text-sm">E-mail</Label>
-                <Input placeholder="seu@exemplo.com" type="email" />
+                <Input placeholder="seuemail@exemplo.com" type="email" />
               </div>
 
               <Button className="w-full">Comece gratuitamente</Button>
@@ -287,13 +320,9 @@ export default function LandingPage() {
             </div>
 
             <div className="hidden md:block">
-              {isSignedIn ? (
-                <UserButton afterSignOutUrl="/" />
-              ) : (
-                <SignInButton mode="modal">
-                  <Button>Entrar</Button>
-                </SignInButton>
-              )}
+              <SignInButton mode="modal">
+                <Button>Entrar</Button>
+              </SignInButton>
             </div>
           </div>
         </div>

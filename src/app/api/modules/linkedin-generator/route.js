@@ -2,32 +2,32 @@ import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(req) {
-    try {
-        const formData = await req.formData();
-        const file = formData.get("file");
+  try {
+    const formData = await req.formData();
+    const file = formData.get("file");
 
-        if (!file) {
-            return NextResponse.json(
-                { error: "Arquivo não encontrado" },
-                { status: 400 }
-            );
-        }
+    if (!file) {
+      return NextResponse.json(
+        { error: "Arquivo não encontrado" },
+        { status: 400 }
+      );
+    }
 
-        const arrayBuffer = await file.arrayBuffer();
-        const base64File = Buffer.from(arrayBuffer).toString("base64");
+    const arrayBuffer = await file.arrayBuffer();
+    const base64File = Buffer.from(arrayBuffer).toString("base64");
 
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) {
-            return NextResponse.json(
-                { error: "API Key do Gemini não configurada" },
-                { status: 500 }
-            );
-        }
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "API Key do Gemini não configurada" },
+        { status: 500 }
+      );
+    }
 
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-        const prompt = `
+    const prompt = `
 Você é um consultor de carreira sênior, com vasta experiência em construção de perfis profissionais para o LinkedIn. Sua tarefa é transformar o conteúdo de um currículo em um **perfil de LinkedIn extremamente atrativo, completo, detalhado e alinhado com as exigências do mercado de trabalho atual**.
 
 Se alguma informação não estiver no currículo, simplesmente ignore a seção e não inclua nenhuma informação extra.
@@ -81,31 +81,31 @@ Descrição:
 ⚠️ Importante: entregue o perfil pronto para copiar e colar no LinkedIn, sem instruções ou colchetes no texto final.
         `;
 
-        const result = await model.generateContent({
-            contents: [
-                {
-                    role: "user",
-                    parts: [
-                        { text: prompt },
-                        {
-                            inlineData: {
-                                mimeType: "application/pdf",
-                                data: base64File,
-                            },
-                        },
-                    ],
-                },
-            ],
-        });
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            { text: prompt },
+            {
+              inlineData: {
+                mimeType: "application/pdf",
+                data: base64File,
+              },
+            },
+          ],
+        },
+      ],
+    });
 
-        const output = await result.response.text();
+    const output = await result.response.text();
 
-        return NextResponse.json({ output }, { status: 200 });
-    } catch (error) {
-        console.error("Erro ao processar o currículo:", error);
-        return NextResponse.json(
-            { error: "Erro ao gerar perfil do LinkedIn" },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json({ output }, { status: 200 });
+  } catch (error) {
+    console.error("Erro ao processar o currículo:", error);
+    return NextResponse.json(
+      { error: "Erro ao gerar perfil do LinkedIn" },
+      { status: 500 }
+    );
+  }
 }

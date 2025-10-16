@@ -2,57 +2,57 @@ import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(req) {
-    try {
-        console.log("Recebendo requisição de upload...");
-        const formData = await req.formData();
-        const file = formData.get("file");
-        const jobData = formData.get("job");
+  try {
+    console.log("Recebendo requisição de upload...");
+    const formData = await req.formData();
+    const file = formData.get("file");
+    const jobData = formData.get("job");
 
-        if (!file) {
-            console.error("Erro: Nenhum arquivo foi enviado.");
-            return NextResponse.json(
-                { error: "Arquivo não encontrado" },
-                { status: 400 }
-            );
-        }
+    if (!file) {
+      console.error("Erro: Nenhum arquivo foi enviado.");
+      return NextResponse.json(
+        { error: "Arquivo não encontrado" },
+        { status: 400 }
+      );
+    }
 
-        if (!jobData) {
-            return NextResponse.json(
-                { error: "Dados da vaga ausentes." },
-                { status: 400 }
-            );
-        }
+    if (!jobData) {
+      return NextResponse.json(
+        { error: "Dados da vaga ausentes." },
+        { status: 400 }
+      );
+    }
 
-        const job = JSON.parse(jobData);
-        if (!job.title || !job.description) {
-            return NextResponse.json(
-                { error: "Informações da vaga incompletas." },
-                { status: 400 }
-            );
-        }
+    const job = JSON.parse(jobData);
+    if (!job.title || !job.description) {
+      return NextResponse.json(
+        { error: "Informações da vaga incompletas." },
+        { status: 400 }
+      );
+    }
 
-        console.log("Arquivo recebido. Convertendo para Base64...");
-        const arrayBuffer = await file.arrayBuffer();
-        const base64File = Buffer.from(arrayBuffer).toString("base64");
+    console.log("Arquivo recebido. Convertendo para Base64...");
+    const arrayBuffer = await file.arrayBuffer();
+    const base64File = Buffer.from(arrayBuffer).toString("base64");
 
-        console.log("Arquivo convertido com sucesso.");
+    console.log("Arquivo convertido com sucesso.");
 
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) {
-            console.error("Erro: API Key do Gemini não configurada.");
-            return NextResponse.json(
-                { error: "API Key do Gemini não configurada" },
-                { status: 500 }
-            );
-        }
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.error("Erro: API Key do Gemini não configurada.");
+      return NextResponse.json(
+        { error: "API Key do Gemini não configurada" },
+        { status: 500 }
+      );
+    }
 
-        console.log(
-            "Chave da API do Gemini verificada. Enviando solicitação para análise..."
-        );
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    console.log(
+      "Chave da API do Gemini verificada. Enviando solicitação para análise..."
+    );
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-        const prompt = `
+    const prompt = `
 Você é um analista sênior de Recrutamento e Seleção, especializado na avaliação de currículos frente a vagas específicas. Sua tarefa é analisar o currículo fornecido e gerar uma **avaliação estruturada e objetiva da aderência do candidato à vaga descrita abaixo**.
 
 A resposta deve ser baseada apenas nas informações concretas extraídas do currículo, comparando com as exigências da vaga. Evite idealizações ou julgamentos subjetivos.
@@ -99,35 +99,35 @@ Avalie o nível de domínio de idiomas, se mencionado, e a clareza da comunicaç
 Evite elogios genéricos ou frases como "excelente candidato". A análise deve ser técnica, realista e útil para recrutadores e profissionais tomarem decisões.
 `;
 
-        const result = await model.generateContent({
-            contents: [
-                {
-                    role: "user",
-                    parts: [
-                        { text: prompt },
-                        {
-                            inlineData: {
-                                mimeType: "application/pdf",
-                                data: base64File,
-                            },
-                        },
-                    ],
-                },
-            ],
-        });
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            { text: prompt },
+            {
+              inlineData: {
+                mimeType: "application/pdf",
+                data: base64File,
+              },
+            },
+          ],
+        },
+      ],
+    });
 
-        console.log("Resposta recebida do Gemini. Processando...");
+    console.log("Resposta recebida do Gemini. Processando...");
 
-        const output = await result.response.text();
+    const output = await result.response.text();
 
-        console.log("Resumo gerado com sucesso.");
+    console.log("Resumo gerado com sucesso.");
 
-        return NextResponse.json({ output }, { status: 200 });
-    } catch (error) {
-        console.error("Erro ao processar o arquivo:", error);
-        return NextResponse.json(
-            { error: "Erro ao processar o arquivo" },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json({ output }, { status: 200 });
+  } catch (error) {
+    console.error("Erro ao processar o arquivo:", error);
+    return NextResponse.json(
+      { error: "Erro ao processar o arquivo" },
+      { status: 500 }
+    );
+  }
 }

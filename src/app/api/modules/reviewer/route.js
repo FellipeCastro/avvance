@@ -2,42 +2,42 @@ import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(req) {
-    try {
-        console.log("Recebendo requisição de upload...");
-        const formData = await req.formData();
-        const file = formData.get("file");
+  try {
+    console.log("Recebendo requisição de upload...");
+    const formData = await req.formData();
+    const file = formData.get("file");
 
-        if (!file) {
-            console.error("Erro: Nenhum arquivo foi enviado.");
-            return NextResponse.json(
-                { error: "Arquivo não encontrado" },
-                { status: 400 }
-            );
-        }
+    if (!file) {
+      console.error("Erro: Nenhum arquivo foi enviado.");
+      return NextResponse.json(
+        { error: "Arquivo não encontrado" },
+        { status: 400 }
+      );
+    }
 
-        console.log("Arquivo recebido. Convertendo para Base64...");
-        const arrayBuffer = await file.arrayBuffer();
-        const base64File = Buffer.from(arrayBuffer).toString("base64");
+    console.log("Arquivo recebido. Convertendo para Base64...");
+    const arrayBuffer = await file.arrayBuffer();
+    const base64File = Buffer.from(arrayBuffer).toString("base64");
 
-        console.log("Arquivo convertido com sucesso.");
+    console.log("Arquivo convertido com sucesso.");
 
-        // Configurar a API do Gemini
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) {
-            console.error("Erro: API Key do Gemini não configurada.");
-            return NextResponse.json(
-                { error: "API Key do Gemini não configurada" },
-                { status: 500 }
-            );
-        }
+    // Configurar a API do Gemini
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.error("Erro: API Key do Gemini não configurada.");
+      return NextResponse.json(
+        { error: "API Key do Gemini não configurada" },
+        { status: 500 }
+      );
+    }
 
-        console.log(
-            "Chave da API do Gemini verificada. Enviando solicitação para análise..."
-        );
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    console.log(
+      "Chave da API do Gemini verificada. Enviando solicitação para análise..."
+    );
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-        const prompt = `
+    const prompt = `
 Você é um especialista em Recrutamento Estratégico e Outplacement com 15+ anos de experiência em análise de currículos para posições de alto nível. Sua tarefa é realizar uma avaliação detalhada do currículo fornecido, aplicando as melhores práticas de mercado e oferecer insights acionáveis para maximizar a empregabilidade do candidato.
 
 ## 🔍 Diretrizes de Análise (Método STAR-R)
@@ -101,37 +101,37 @@ A análise será considerada eficaz se:
 4. Facilitar a tomada de decisão por recrutadores
 5. Aumentar significativamente a visibilidade do perfil em sistemas ATS
 `;
-        const result = await model.generateContent({
-            contents: [
-                {
-                    role: "user",
-                    parts: [
-                        { text: prompt },
-                        {
-                            inlineData: {
-                                mimeType: "application/pdf",
-                                data: base64File,
-                            },
-                        },
-                    ],
-                },
-            ],
-        });
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            { text: prompt },
+            {
+              inlineData: {
+                mimeType: "application/pdf",
+                data: base64File,
+              },
+            },
+          ],
+        },
+      ],
+    });
 
-        console.log("Resposta recebida do Gemini. Processando...");
+    console.log("Resposta recebida do Gemini. Processando...");
 
-        const output = await result.response.text();
+    const output = await result.response.text();
 
-        console.log("Resumo gerado com sucesso.");
+    console.log("Resumo gerado com sucesso.");
 
-        // const id = crypto.randomUUID();
-        return NextResponse.json({ output }, { status: 200 });
-        // return NextResponse.json({ id, output }, { status: 200 });
-    } catch (error) {
-        console.error("Erro ao processar o arquivo:", error);
-        return NextResponse.json(
-            { error: "Erro ao processar o arquivo" },
-            { status: 500 }
-        );
-    }
+    // const id = crypto.randomUUID();
+    return NextResponse.json({ output }, { status: 200 });
+    // return NextResponse.json({ id, output }, { status: 200 });
+  } catch (error) {
+    console.error("Erro ao processar o arquivo:", error);
+    return NextResponse.json(
+      { error: "Erro ao processar o arquivo" },
+      { status: 500 }
+    );
+  }
 }

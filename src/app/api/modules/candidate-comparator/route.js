@@ -3,7 +3,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(req) {
   try {
-    console.log("📥 Recebendo dados...");
     const formData = await req.formData();
 
     const files = formData.getAll("files");
@@ -36,7 +35,6 @@ export async function POST(req) {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-    // Converte todos os arquivos para base64
     const candidatesData = await Promise.all(
       files.map(async (file, idx) => {
         const buffer = Buffer.from(await file.arrayBuffer()).toString("base64");
@@ -48,7 +46,6 @@ export async function POST(req) {
       })
     );
 
-    // Criação dinâmica do prompt
     const prompt = `
 Você é um analista de recrutamento experiente. Sua missão é comparar currículos de candidatos para uma vaga específica e determinar **qual é o melhor candidato**, com justificativas técnicas.
 
@@ -113,7 +110,6 @@ Recomendações para a empresa: ...
 ⚠️ Evite repetições, floreios ou elogios vazios. Seja direto, técnico e objetivo. A resposta será usada por recrutadores profissionais.
 `;
 
-    // Criação do conteúdo da requisição com os PDFs embutidos
     const requestParts = [
       {
         role: "user",
@@ -137,7 +133,7 @@ Recomendações para a empresa: ...
 
     return NextResponse.json({ output }, { status: 200 });
   } catch (error) {
-    console.error("❌ Erro ao processar análise:", error);
+    console.error("Erro ao processar análise:", error);
     return NextResponse.json(
       { error: "Erro ao processar a análise comparativa." },
       { status: 500 }

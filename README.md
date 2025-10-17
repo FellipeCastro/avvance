@@ -1,4 +1,4 @@
-# Setup - TalentAI
+# Setup - Avvance
 
 ## Supabase
 

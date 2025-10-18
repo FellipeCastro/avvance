@@ -73,7 +73,7 @@ export default function Page() {
                 onReset={onReset}
             />
 
-            <AiOutput output={output} />
+            <AiOutput output={output} quiz={true} />
         </PageTemplate>
     );
 }

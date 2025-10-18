@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import {
   Card,
   CardHeader,
@@ -8,6 +9,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+
 import {
   Dialog,
   DialogTrigger,
@@ -16,11 +18,13 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
+
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+
 import { ScrollArea } from "./ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "./ui/button";
@@ -30,50 +34,6 @@ import { Link2, Trash2, Star } from "lucide-react";
 import MarkdownComponent from "@/components/ui/markdown-component";
 import Loader from "./ui/loader";
 
-const JobCardHeader = ({ job }) => (
-  <CardHeader>
-    <CardTitle>{job.title}</CardTitle>
-  </CardHeader>
-);
-
-const JobCardContent = ({ job }) => (
-  <CardContent className="space-y-1 text-sm text-muted-foreground">
-    <div className="space-y-2">
-      <p className="flex items-center gap-2 font-bold">🏢 {job.company}</p>
-      <p className="flex items-center gap-2">
-        📍 {job.location || "Não informada"}
-      </p>
-      <p className="mt-3 text-zinc-400">
-        {job.date_posted || "Data não informada"}
-      </p>
-    </div>
-  </CardContent>
-);
-
-const JobLink = ({ url }) => (
-  <Tooltip>
-    <TooltipTrigger asChild>
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group w-fit flex justify-center items-center gap-2 text-purple-400 text-sm"
-      >
-        <Link2
-          size={18}
-          className="transition duration-200 group-hover:-translate-x-0"
-        />
-        <span className="transition duration-200 group-hover:translate-x-1">
-          Acessar vaga
-        </span>
-      </a>
-    </TooltipTrigger>
-    <TooltipContent>
-      <p className="">{url}</p>
-    </TooltipContent>
-  </Tooltip>
-);
-
 const StatusMessage = ({ type, message }) => (
   <div
     className={`text-sm ${
@@ -82,52 +42,6 @@ const StatusMessage = ({ type, message }) => (
   >
     {message}
   </div>
-);
-
-const ActionButtons = ({ saved, loading, onSave, onDelete }) => (
-  <div className="flex gap-2 justify-center mb-1">
-    <Button
-      variant="ghost"
-      size="icon"
-      disabled={loading}
-      className={`${
-        saved ? "border-orange-300" : ""
-      } hover:border-orange-300 hover:-translate-y-0.5`}
-      onClick={onSave}
-    >
-      <Star color="orange" fill={saved ? "orange" : "none"} />
-    </Button>
-
-    <DeleteButton loading={loading} onDelete={onDelete} />
-  </div>
-);
-
-const DeleteButton = ({ loading, onDelete }) => (
-  <Dialog>
-    <DialogTrigger asChild>
-      <Button size="icon" variant="destructive" disabled={loading}>
-        <Trash2 />
-      </Button>
-    </DialogTrigger>
-    <DialogContent className="w-sm pr-10">
-      <DialogHeader>
-        <DialogTitle className="text-1xl">
-          ⚠️ Você tem certeza que quer excluir essa vaga?
-        </DialogTitle>
-      </DialogHeader>
-      <div className="flex gap-2">
-        <DialogClose asChild>
-          <Button variant="outline" disabled={loading}>
-            Não
-          </Button>
-        </DialogClose>
-        <Button variant="destructive" onClick={onDelete} disabled={loading}>
-          <Trash2 />
-          Sim
-        </Button>
-      </div>
-    </DialogContent>
-  </Dialog>
 );
 
 export default function JobCard({ job, onDelete, isSaved, children }) {
@@ -220,9 +134,26 @@ export default function JobCard({ job, onDelete, isSaved, children }) {
             saved ? "border-orange-300" : ""
           }`}
         >
-          <JobCardHeader job={job} saved={saved} />
+          <CardHeader>
+            <CardTitle>{job.title}</CardTitle>
+          </CardHeader>
+
           <Separator className="mb-1" />
-          <JobCardContent job={job} />
+
+          <CardContent className="space-y-1 text-sm text-muted-foreground">
+            <div className="space-y-2">
+              <p className="flex items-center gap-2 font-bold">
+                🏢 {job.company}
+              </p>
+              <p className="flex items-center gap-2">
+                📍 {job.location || "indisponível"}
+              </p>
+              <p className="mt-3 text-zinc-400">
+                {job.date_posted || "Data indisponível"}
+              </p>
+            </div>
+          </CardContent>
+
           <CardFooter className="mt-auto flex flex-wrap justify-between items-center">
             <JobLink url={job.job_url} />
             {children}
@@ -244,12 +175,21 @@ export default function JobCard({ job, onDelete, isSaved, children }) {
 
               {state.loading && <Loader />}
 
-              <ActionButtons
-                saved={saved}
-                loading={state.loading}
-                onSave={handleSave}
-                onDelete={handleDelete}
-              />
+              <div className="flex gap-2 justify-center mb-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  disabled={state.loading}
+                  className={`${
+                    saved ? "border-orange-300" : ""
+                  } hover:border-orange-300 hover:-translate-y-0.5`}
+                  onClick={handleSave}
+                >
+                  <Star color="orange" fill={saved ? "orange" : "none"} />
+                </Button>
+
+                <DeleteButton loading={state.loading} onDelete={handleDelete} />
+              </div>
 
               <DialogTitle className="text-center">{job.title}</DialogTitle>
 
@@ -266,10 +206,10 @@ export default function JobCard({ job, onDelete, isSaved, children }) {
                 </p>
                 <p className="flex items-center gap-2">
                   📍
-                  {job.location || "Não informada"}
+                  {job.location || "indisponível"}
                 </p>
                 <p className="mt-3 text-zinc-400">
-                  {job.date_posted || "Data não informada"}
+                  {job.date_posted || "Data indisponível"}
                 </p>
               </div>
 
@@ -281,3 +221,55 @@ export default function JobCard({ job, onDelete, isSaved, children }) {
     </Dialog>
   );
 }
+
+const JobLink = ({ url }) => (
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group w-fit flex justify-center items-center gap-2 text-purple-400 text-sm"
+      >
+        <Link2
+          size={18}
+          className="transition duration-200 group-hover:-translate-x-0"
+        />
+        <span className="transition duration-200 group-hover:translate-x-1">
+          Acessar vaga
+        </span>
+      </a>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p className="">{url}</p>
+    </TooltipContent>
+  </Tooltip>
+);
+
+const DeleteButton = ({ loading, onDelete }) => (
+  <Dialog>
+    <DialogTrigger asChild>
+      <Button size="icon" variant="destructive" disabled={loading}>
+        <Trash2 />
+      </Button>
+    </DialogTrigger>
+    <DialogContent className="w-sm pr-10">
+      <DialogHeader>
+        <DialogTitle className="text-1xl">
+          ⚠️ Você tem certeza que quer excluir essa vaga?
+        </DialogTitle>
+      </DialogHeader>
+      <div className="flex gap-2">
+        <DialogClose asChild>
+          <Button variant="outline" disabled={loading}>
+            Não
+          </Button>
+        </DialogClose>
+        <Button variant="destructive" onClick={onDelete} disabled={loading}>
+          <Trash2 />
+          Sim
+        </Button>
+      </div>
+    </DialogContent>
+  </Dialog>
+);

@@ -8,30 +8,30 @@ import TopLoader from "@/components/ui/top-loader";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-    title: "TalentAI",
-    description: "Plataforma de Recolocação Profissional",
-    icons: {
-        icon: "/favicon.svg",
-    },
+  title: "Avvance",
+  description:
+    "Uma plataforma inteligente que conecta candidatos e vagas com análises baseadas em IA, otimizações de perfil e insights de mercado",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }) {
-    return (
-        <ClerkProvider>
-            <html lang="en" suppressHydrationWarning>
-                <body className={`${inter.className} antialiased`}>
-                    <ThemeProvider
-                        attribute="class"
-                        defaultTheme="system"
-                        enableSystem
-                        disableTransitionOnChange
-                    >
-                        {/* TopLoader também precisa ser client-safe */}
-                        <TopLoader />
-                        {children}
-                    </ThemeProvider>
-                </body>
-            </html>
-        </ClerkProvider>
-    );
+  return (
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${inter.className} antialiased`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <TopLoader />
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
+  );
 }

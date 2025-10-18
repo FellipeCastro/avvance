@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 
 export async function GET(req) {
   try {
-    const { userId } = await auth(req);
+    const { userId } = await auth();
 
     if (!userId) {
       return NextResponse.json(
@@ -43,7 +43,7 @@ export async function POST(req) {
     const { job_url, id, description, title, date_posted, company, location } =
       await req.json();
 
-    const { userId } = await auth(req);
+    const { userId } = await auth();
 
     if (!userId) {
       return NextResponse.json(
@@ -102,7 +102,7 @@ export async function POST(req) {
 export async function DELETE(req) {
   try {
     const { id } = await req.json();
-    const { userId } = await auth(req);
+    const { userId } = await auth();
 
     if (!userId) {
       return NextResponse.json(

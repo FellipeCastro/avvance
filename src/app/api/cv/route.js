@@ -5,7 +5,7 @@ import { getDatetime, generateFilePath } from "@/lib/utils";
 
 export async function GET(req) {
   try {
-    const { userId } = await auth();
+    const { userId } = await auth(req);
 
     if (!userId) {
       return NextResponse.json(
@@ -72,7 +72,7 @@ export async function POST(req) {
       );
     }
 
-    const { userId } = await auth();
+    const { userId } = await auth(req);
 
     if (!userId) {
       return NextResponse.json(

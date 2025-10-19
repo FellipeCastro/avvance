@@ -319,44 +319,38 @@ export default function QuizComponent({ quizData }) {
 
     if (!quizStarted) {
         return (
-            <Card className="p-8 text-center">
-                <div className="max-w-md mx-auto">
-                    <h2 className="text-2xl font-bold mb-4">
-                        🎯 Quiz de Entrevista
-                    </h2>
-                    <p className="text-gray-600 mb-6">
-                        Teste seus conhecimentos com {totalQuestions} perguntas
-                        baseadas no seu currículo e na vaga desejada.
-                    </p>
-                    <div className="space-y-3 text-left mb-6">
-                        <div className="flex items-center gap-3">
-                            <CheckCircle className="text-green-500" size={20} />
-                            <span>Perguntas técnicas e comportamentais</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <CheckCircle className="text-green-500" size={20} />
-                            <span>Baseado no seu perfil profissional</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <CheckCircle className="text-green-500" size={20} />
-                            <span>Feedback imediato</span>
-                        </div>
+            <div className="max-w mx-auto">
+                <h2 className="text-2xl font-bold mb-4">
+                    🎯 Quiz de Entrevista
+                </h2>
+                <p className="text-gray-600 mb-6">
+                    Teste seus conhecimentos com {totalQuestions} perguntas
+                    baseadas no seu currículo e na vaga desejada.
+                </p>
+                <div className="space-y-3 text-left mb-6">
+                    <div className="flex items-center gap-3">
+                        <CheckCircle className="text-green-500" size={20} />
+                        <span>Perguntas técnicas e comportamentais</span>
                     </div>
-                    <Button
-                        onClick={handleStartQuiz}
-                        size="lg"
-                        className="w-full"
-                    >
-                        Iniciar Quiz
-                    </Button>
+                    <div className="flex items-center gap-3">
+                        <CheckCircle className="text-green-500" size={20} />
+                        <span>Baseado no seu perfil profissional</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <CheckCircle className="text-green-500" size={20} />
+                        <span>Feedback imediato</span>
+                    </div>
                 </div>
-            </Card>
+                <Button onClick={handleStartQuiz} size="lg" className="w-full">
+                    Iniciar Quiz
+                </Button>
+            </div>
         );
     }
 
     if (showResults) {
         return (
-            <Card className="p-8">
+            <>
                 <div className="text-center mb-6">
                     <h2 className="text-2xl font-bold mb-4">
                         📊 Resultado do Quiz
@@ -373,7 +367,7 @@ export default function QuizComponent({ quizData }) {
 
                     <div className="w-full bg-gray-200 rounded-full h-3 mb-8">
                         <div
-                            className="bg-green-500 h-3 rounded-full transition-all duration-500"
+                            className="bg-purple-500 h-3 rounded-full transition-all duration-500"
                             style={{ width: `${score.percentage}%` }}
                         ></div>
                     </div>
@@ -412,7 +406,7 @@ export default function QuizComponent({ quizData }) {
                                 {!isCorrect &&
                                     userAnswerIndex !== undefined && (
                                         <div className="ml-8 mt-2">
-                                            <p className="text-red-600 text-sm">
+                                            <p className="text-red-500 text-sm">
                                                 <strong>Sua resposta:</strong>{" "}
                                                 {String.fromCharCode(
                                                     65 + userAnswerIndex
@@ -424,7 +418,7 @@ export default function QuizComponent({ quizData }) {
                                                     ].text
                                                 }
                                             </p>
-                                            <p className="text-green-600 text-sm">
+                                            <p className="text-green-500 text-sm mt-2">
                                                 <strong>
                                                     Resposta correta:
                                                 </strong>{" "}
@@ -464,12 +458,12 @@ export default function QuizComponent({ quizData }) {
                         Imprimir Resultado
                     </Button>
                 </div>
-            </Card>
+            </>
         );
     }
 
     return (
-        <Card className="p-6">
+        <div className="max-w mx-auto">
             {/* Header com progresso */}
             <div className="flex justify-between items-center mb-6">
                 <div>
@@ -497,7 +491,7 @@ export default function QuizComponent({ quizData }) {
 
             {/* Questão atual */}
             <div className="mb-6">
-                <h4 className="text-xl font-medium mb-4 text-gray-900">
+                <h4 className="text-md font-medium mb-4">
                     {currentQuestionData.questionText}
                 </h4>
 
@@ -518,21 +512,24 @@ export default function QuizComponent({ quizData }) {
                                     }
                                     className={`w-full p-4 text-left border rounded-lg transition-all ${
                                         isSelected
-                                            ? "border-blue-500 bg-blue-50 ring-2 ring-blue-200"
-                                            : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
+                                            ? "border-purple-500 bg-purple-900 ring-2 ring-purple-500 "
+                                            : "border-gray-300 hover:text-gray-400"
                                     }`}
                                 >
                                     <div className="flex items-center gap-3">
                                         <div
-                                            className={`flex-shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center font-semibold ${
-                                                isSelected
-                                                    ? "border-blue-500 bg-blue-500 text-white"
-                                                    : "border-gray-400 text-gray-600"
-                                            }`}
+                                            className={`flex-shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center font-semibold
+                                            opacity-80 
+                                                ${
+                                                    isSelected
+                                                        ? "border-purple-500 bg-purple-500 text-white"
+                                                        : "border-gray-400 text-gray-600"
+                                                }
+                                            `}
                                         >
                                             {letter}
                                         </div>
-                                        <span className="text-gray-800">
+                                        <span className="text-sm opacity-80">
                                             {alternative.text}
                                         </span>
                                     </div>
@@ -567,7 +564,7 @@ export default function QuizComponent({ quizData }) {
                         disabled={
                             Object.keys(userAnswers).length !== totalQuestions
                         }
-                        className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
+                        className="flex items-center gap-2 bg-purple-500 text-white hover:bg-purple-600"
                     >
                         Finalizar
                         <CheckCircle size={16} />
@@ -583,6 +580,6 @@ export default function QuizComponent({ quizData }) {
                     </Button>
                 )}
             </div>
-        </Card>
+        </div>
     );
 }

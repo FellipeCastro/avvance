@@ -500,9 +500,6 @@ export default function QuizComponent({ quizData }) {
                     })}
                 </div>
 
-                {/* Output do Feedback */}
-                {output && <AiOutput output={output} />}
-
                 <div className="flex gap-3">
                     <Button
                         onClick={handleRestart}
@@ -514,19 +511,18 @@ export default function QuizComponent({ quizData }) {
                     </Button>
                     <Button
                         onClick={getAiFeedback}
-                        disabled={loading}
+                        disabled={loading || output}
                         className="flex-1"
                         variant="outline"
                     >
-                        {loading ? "Gerando Feedback..." : "Obter Feedback"}
+                        {loading ? "Gerando Feedback..." : output ? "Feedback gerado" :"Obter Feedback"}
                     </Button>
                 </div>
 
-                {error && (
-                    <div className="text-red-500 mt-4">
-                        {error}
-                    </div>
-                )}
+                {/* Output do Feedback */}
+                {output && <AiOutput output={output} />}
+
+                {error && <div className="text-red-500 mt-4">{error}</div>}
             </>
         );
     }

@@ -10,6 +10,7 @@ import {
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { Progress } from "../ui/progress";
+import AiOutput from "../dashboard/ai-output";
 
 // Função robusta para limpar e validar JSON
 const cleanAndParseJSON = (jsonString) => {
@@ -181,6 +182,9 @@ export default function QuizComponent({ quizData }) {
     const [showResults, setShowResults] = useState(false);
     const [quizStarted, setQuizStarted] = useState(false);
     const [parseError, setParseError] = useState(null);
+    const [output, setOutput] = useState(null);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     // Função para processar os dados do quiz
     const processedQuizData = () => {
@@ -210,6 +214,114 @@ export default function QuizComponent({ quizData }) {
 
     const questions = processedQuizData();
     const totalQuestions = questions.length;
+
+    const handleAnswerSelect = (questionIndex, answerIndex) => {
+        if (showResults) return; // Não permite mudar respostas após ver resultados
+
+        setUserAnswers((prev) => ({
+            ...prev,
+            [questionIndex]: answerIndex,
+        }));
+    };
+
+    const handleNext = () => {
+        if (currentQuestion < totalQuestions - 1) {
+            setCurrentQuestion((prev) => prev + 1);
+        }
+    };
+
+    const handlePrevious = () => {
+        if (currentQuestion > 0) {
+            setCurrentQuestion((prev) => prev - 1);
+        }
+    };
+
+    const handleSubmit = () => {
+        setShowResults(true);
+    };
+
+    const handleRestart = () => {
+        setCurrentQuestion(0);
+        setUserAnswers({});
+        setShowResults(false);
+        setQuizStarted(false);
+        setParseError(null);
+        setOutput(null);
+        setError(null);
+    };
+
+    const handleStartQuiz = () => {
+        setQuizStarted(true);
+    };
+
+    const calculateScore = () => {
+        let correct = 0;
+        questions.forEach((question, index) => {
+            if (userAnswers[index] === question.correctAnswerIndex) {
+                correct++;
+            }
+        });
+        return {
+            correct,
+            total: totalQuestions,
+            percentage: Math.round((correct / totalQuestions) * 100),
+        };
+    };
+
+    const getAiFeedback = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            setOutput(null);
+
+            const score = calculateScore();
+
+            // Preparar dados do resultado
+            const resultData = {
+                score: score,
+                questions: questions.map((question, index) => ({
+                    questionNumber: index + 1,
+                    questionText: question.questionText,
+                    userAnswer: userAnswers[index],
+                    correctAnswer: question.correctAnswerIndex,
+                    isCorrect:
+                        userAnswers[index] === question.correctAnswerIndex,
+                    alternatives: question.alternatives.map((alt) => alt.text),
+                })),
+                summary: {
+                    totalQuestions: totalQuestions,
+                    correctAnswers: score.correct,
+                    wrongAnswers: totalQuestions - score.correct,
+                    answeredQuestions: Object.keys(userAnswers).length,
+                    unansweredQuestions:
+                        totalQuestions - Object.keys(userAnswers).length,
+                },
+            };
+
+            console.log("📊 DADOS PARA FEEDBACK DA IA:", resultData);
+
+            const response = await fetch("/api/ai-feedback", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ resultData }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Erro ao obter feedback");
+            }
+
+            const data = await response.json();
+            setOutput(data.feedback);
+        } catch (error) {
+            console.error("Erro ao gerar feedback:", error);
+            setError("Erro ao gerar feedback: " + error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Se houve erro no parsing, mostra mensagem de erro
     if (parseError) {
@@ -262,75 +374,11 @@ export default function QuizComponent({ quizData }) {
         );
     }
 
-    const handleAnswerSelect = (questionIndex, answerIndex) => {
-        if (showResults) return; // Não permite mudar respostas após ver resultados
-
-        setUserAnswers((prev) => ({
-            ...prev,
-            [questionIndex]: answerIndex,
-        }));
-    };
-
-    const handleNext = () => {
-        if (currentQuestion < totalQuestions - 1) {
-            setCurrentQuestion((prev) => prev + 1);
-        }
-    };
-
-    const handlePrevious = () => {
-        if (currentQuestion > 0) {
-            setCurrentQuestion((prev) => prev - 1);
-        }
-    };
-
-    const handleSubmit = () => {
-        setShowResults(true);
-    };
-
-    const handleRestart = () => {
-        setCurrentQuestion(0);
-        setUserAnswers({});
-        setShowResults(false);
-        setQuizStarted(false);
-        setParseError(null);
-    };
-
-    const handleStartQuiz = () => {
-        setQuizStarted(true);
-    };
-
-    const calculateScore = () => {
-        let correct = 0;
-        questions.forEach((question, index) => {
-            if (userAnswers[index] === question.correctAnswerIndex) {
-                correct++;
-            }
-        });
-        return {
-            correct,
-            total: totalQuestions,
-            percentage: Math.round((correct / totalQuestions) * 100),
-        };
-    };
-
-    const score = calculateScore();
-    const currentQuestionData = questions[currentQuestion];
-    const userAnswer = userAnswers[currentQuestion];
-
-    const getAiFeedback = async () => {
-        try {
-            console.log("AI Feedback");
-        } catch (error) {
-            console.error("Erro:", error);
-            setError("Erro ao gerar feedback: " + error.message);
-        }
-    }
-
     if (!quizStarted) {
         return (
             <div className="max-w mx-auto">
                 <h2 className="text-2xl font-bold mb-4">
-                    🎯 Quiz de Entrevista
+                    🎯 Simulação de Entrevista
                 </h2>
                 <p className="text-gray-600 mb-6">
                     Teste seus conhecimentos com {totalQuestions} perguntas
@@ -351,18 +399,20 @@ export default function QuizComponent({ quizData }) {
                     </div>
                 </div>
                 <Button onClick={handleStartQuiz} size="lg" className="w-full">
-                    Iniciar Quiz
+                    Iniciar Entrevista
                 </Button>
             </div>
         );
     }
 
     if (showResults) {
+        const score = calculateScore();
+
         return (
             <>
                 <div className="text-center mb-6">
                     <h2 className="text-2xl font-bold mb-4">
-                        📊 Resultado do Quiz
+                        📊 Resultado do Entrevista
                     </h2>
 
                     <div className="inline-flex flex-col items-center mb-6">
@@ -450,6 +500,9 @@ export default function QuizComponent({ quizData }) {
                     })}
                 </div>
 
+                {/* Output do Feedback */}
+                {output && <AiOutput output={output} />}
+
                 <div className="flex gap-3">
                     <Button
                         onClick={handleRestart}
@@ -457,19 +510,30 @@ export default function QuizComponent({ quizData }) {
                         variant="outline"
                     >
                         <RotateCcw size={16} className="mr-2" />
-                        Refazer Quiz
+                        Refazer Entrevista
                     </Button>
                     <Button
                         onClick={getAiFeedback}
+                        disabled={loading}
                         className="flex-1"
                         variant="outline"
                     >
-                        Obter Feedback
+                        {loading ? "Gerando Feedback..." : "Obter Feedback"}
                     </Button>
                 </div>
+
+                {error && (
+                    <div className="text-red-500 mt-4">
+                        {error}
+                    </div>
+                )}
             </>
         );
     }
+
+    const currentQuestionData = questions[currentQuestion];
+    const userAnswer = userAnswers[currentQuestion];
+    const score = calculateScore();
 
     return (
         <div className="max-w mx-auto">

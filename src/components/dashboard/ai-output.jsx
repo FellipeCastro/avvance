@@ -39,33 +39,35 @@ export default function AiOutput({ output, file, setError, quiz = false }) {
     return (
         output && (
             <>
-                <div className="flex gap-3 flex-wrap">
-                    <CopyButton text={output} />
-                    <Button
-                        variant="outline"
-                        onClick={handleSave}
-                        disabled={saving}
-                        className="flex items-center gap-2"
-                    >
-                        {saving ? (
-                            <>
-                                <Loader2 className="animate-spin" />
-                                Salvando...
-                            </>
-                        ) : (
-                            <>
-                                <Bookmark />
-                                Salvar
-                            </>
-                        )}
-                    </Button>
-                </div>
+                {!quiz && (
+                    <div className="flex gap-3 flex-wrap">
+                        <CopyButton text={output} />
+                        <Button
+                            variant="outline"
+                            onClick={handleSave}
+                            disabled={saving}
+                            className="flex items-center gap-2"
+                        >
+                            {saving ? (
+                                <>
+                                    <Loader2 className="animate-spin" />
+                                    Salvando...
+                                </>
+                            ) : (
+                                <>
+                                    <Bookmark />
+                                    Salvar
+                                </>
+                            )}
+                        </Button>
+                    </div>
+                )}
 
                 <Card className="p-8">
                     {quiz ? (
-                      <QuizComponent quizData={output} />
+                        <QuizComponent quizData={output} />
                     ) : (
-                      <MarkdownComponent>{output}</MarkdownComponent>
+                        <MarkdownComponent>{output}</MarkdownComponent>
                     )}
                 </Card>
             </>

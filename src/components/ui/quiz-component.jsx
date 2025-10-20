@@ -317,6 +317,15 @@ export default function QuizComponent({ quizData }) {
     const currentQuestionData = questions[currentQuestion];
     const userAnswer = userAnswers[currentQuestion];
 
+    const getAiFeedback = async () => {
+        try {
+            console.log("AI Feedback");
+        } catch (error) {
+            console.error("Erro:", error);
+            setError("Erro ao gerar feedback: " + error.message);
+        }
+    }
+
     if (!quizStarted) {
         return (
             <div className="max-w mx-auto">
@@ -451,11 +460,11 @@ export default function QuizComponent({ quizData }) {
                         Refazer Quiz
                     </Button>
                     <Button
-                        onClick={() => window.print()}
+                        onClick={getAiFeedback}
                         className="flex-1"
                         variant="outline"
                     >
-                        Imprimir Resultado
+                        Obter Feedback
                     </Button>
                 </div>
             </>

@@ -3,7 +3,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(req) {
   try {
-    console.log("Recebendo requisição de upload...");
     const formData = await req.formData();
     const file = formData.get("file");
 
@@ -15,13 +14,9 @@ export async function POST(req) {
       );
     }
 
-    console.log("Arquivo recebido. Convertendo para Base64...");
     const arrayBuffer = await file.arrayBuffer();
     const base64File = Buffer.from(arrayBuffer).toString("base64");
 
-    console.log("Arquivo convertido com sucesso.");
-
-    // Configurar a API do Gemini
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       console.error("Erro: API Key do Gemini não configurada.");
@@ -31,9 +26,6 @@ export async function POST(req) {
       );
     }
 
-    console.log(
-      "Chave da API do Gemini verificada. Enviando solicitação para análise..."
-    );
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 

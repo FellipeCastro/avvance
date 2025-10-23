@@ -7,7 +7,6 @@ import {
   SignUpButton,
   SignedIn,
   SignedOut,
-  useUser,
   UserButton,
 } from "@clerk/nextjs";
 
@@ -35,7 +34,7 @@ import ModuleCard from "@/components/module-card";
 import Link from "next/link";
 
 export default function LandingPage() {
-  const { openSignIn, openSignUp } = useClerk();
+  const { openSignUp } = useClerk();
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-background">
@@ -53,7 +52,10 @@ export default function LandingPage() {
             <SignedOut>
               <div className="flex gap-4">
                 <SignInButton mode="modal">
-                  <Button variant={"outline"}>
+                  <Button
+                    variant={"outline"}
+                    className="bg-transparent border-foreground"
+                  >
                     <LogIn /> Entrar
                   </Button>
                 </SignInButton>
@@ -104,15 +106,17 @@ export default function LandingPage() {
             — reduza tempo de contratação e aumente a assertividade.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <Button
-              className="px-6 py-3"
-              variant="default"
-              onClick={openSignUp}
-            >
-              Experimente grátis
-            </Button>
-          </div>
+          <SignedOut>
+            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <Button
+                className="px-6 py-3"
+                variant="default"
+                onClick={openSignUp}
+              >
+                Experimente grátis
+              </Button>
+            </div>
+          </SignedOut>
 
           <motion.div
             initial={{ opacity: 0 }}

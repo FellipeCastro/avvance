@@ -3,7 +3,7 @@ import {
     UserCheck,
     User,
     FileHeart,
-    Users,
+    MessageSquareText ,
     Gavel,
     TextSearch,
     BarChart2,
@@ -103,5 +103,15 @@ export const modules = [
             "Realize análises estratégicas de currículos com base em vagas específicas. Receba relatórios profissionais que avaliam a aderência do candidato, destacam pontos fortes e oportunidades de melhoria, e ajudam a tomar decisões mais assertivas no recrutamento.",
         shortDescription:
             "Avalie o alinhamento entre currículos e vagas com inteligência.",
-    }
+    },
+    {
+        title: "Simulador de Entrevista de Emprego",
+        url: "/dashboard/interview-simulator",
+        icon: MessageSquareText ,
+        category: "Análise de Aderência",
+        description:
+            "Submeta um currículo e uma vaga para gerar um quiz de entrevista interativo. Responda perguntas baseadas no seu perfil e receba um score detalhado, com pontos fortes, GAPs de competência e recomendações de estudo para a vaga.",
+        shortDescription:
+            "Simule entrevistas reais com IA e receba feedback personalizado para sua preparação.",
+    },
 ];

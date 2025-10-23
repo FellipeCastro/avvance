@@ -44,7 +44,7 @@ export default function CvCard({ cv, onDelete }) {
 
     setLoading(true);
     try {
-      const response = await fetch("/api/cv/delete", {
+      const response = await fetch("/api/cv", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: cv.id }),

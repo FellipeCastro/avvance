@@ -37,9 +37,9 @@ export default function LandingPage() {
   const { openSignUp } = useClerk();
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-background to-background">
+    <main className="p-10 min-h-screen bg-gradient-to-b from-background to-background">
       <header>
-        <nav className="container mx-auto flex items-center justify-around py-7 mt-7 bg-gradient-to-tr from-purple-400 to-background rounded-2xl">
+        <nav className="container mx-auto flex items-center justify-around py-7 bg-gradient-to-tr from-purple-400 to-background rounded-2xl">
           <h1 className="flex items-center gap-2 text-3xl font-bold mb-1">
             <span className="text-purple-400">
               <Sparkles size={25} />
@@ -122,15 +122,15 @@ export default function LandingPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="mt-6 flex items-center gap-4 text-sm text-muted-foreground"
+            className="mt-6 flex items-center gap-4 text-sm text-purple-400"
           >
             <div className="flex items-center gap-2">
-              <Users size={18} color="#00bc7d" />
+              <Users size={18} />
               Testado por profissionais experientes
             </div>
             <div className="h-6 w-px bg-border" />
             <div className="flex items-center gap-2">
-              <Star size={18} color="orange" />
+              <Star size={18} />
               Sucesso em contratações
             </div>
           </motion.div>
@@ -295,27 +295,27 @@ export default function LandingPage() {
 
           <div className="flex items-center gap-6">
             <nav className="flex items-center gap-4 text-sm text-muted-foreground">
-              <a href="/terms" className="hover:text-primary transition">
+              <a href="/#" className="hover:text-primary transition">
                 Termos
               </a>
-              <a href="/privacy" className="hover:text-primary transition">
+              <a href="/#" className="hover:text-primary transition">
                 Privacidade
               </a>
-              <a href="/contact" className="hover:text-primary transition">
+              <a href="/#" className="hover:text-primary transition">
                 Contato
               </a>
             </nav>
 
             <div className="flex items-center gap-3">
               <a
-                href="https://twitter.com"
+                href="/#"
                 aria-label="twitter"
                 className="text-muted-foreground hover:text-primary transition"
               >
                 Twitter
               </a>
               <a
-                href="https://linkedin.com"
+                href="/#"
                 aria-label="linkedin"
                 className="text-muted-foreground hover:text-primary transition"
               >

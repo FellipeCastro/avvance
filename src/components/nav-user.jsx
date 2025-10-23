@@ -38,7 +38,7 @@ export default function NavUser({ user }) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground transition duration-200  cursor-pointer"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground transition duration-200 cursor-pointer"
             >
               <img
                 src={user.avatar}
@@ -74,7 +74,7 @@ export default function NavUser({ user }) {
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogOut}>
               <LogOut />
-              Log out
+              Sair
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

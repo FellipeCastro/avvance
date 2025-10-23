@@ -1,11 +1,17 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import { Inter } from "next/font/google";
+import {
+  Inter,
+  Montserrat,
+  Funnel_Display,
+} from "next/font/google";
 import "./globals.css";
 
 import TopLoader from "@/components/ui/top-loader";
 
 const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"] });
+const funnelDisplay = Funnel_Display({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Avvance",
@@ -20,7 +26,7 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.className} antialiased`}>
+        <body className={`${funnelDisplay.className} antialiased`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

@@ -46,7 +46,7 @@ export async function AppSidebar() {
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild
-                    className={"transition duration-200 hover:bg-white/20"}
+                    className={"transition duration-200 hover:text-purple-400"}
                   >
                     <Link href={"/dashboard"} className="flex items-center">
                       <span className="text-purple-400 flex justify-center items-center">
@@ -61,7 +61,9 @@ export async function AppSidebar() {
                     <SidebarMenuItem className={""} key={module.title}>
                       <SidebarMenuButton
                         asChild
-                        className={"transition duration-200 hover:bg-white/20"}
+                        className={
+                          "transition duration-200 hover:text-purple-400"
+                        }
                       >
                         <Link
                           href={module.url}
@@ -80,7 +82,7 @@ export async function AppSidebar() {
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild
-                    className={"transition duration-200 hover:bg-white/20"}
+                    className={"transition duration-200 hover:text-purple-400"}
                   >
                     <Link
                       href={"/dashboard/saved"}

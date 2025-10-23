@@ -2,7 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 
 export const metadata = {
-    title: "TalentAI - Dashboard",
+    title: "Avvance Dashboard",
 };
 
 export default function Layout({ children }) {
@@ -18,14 +18,3 @@ export default function Layout({ children }) {
         </SidebarProvider>
     );
 }
-
-// export default function DashboardLayout({ children }) {
-//   return (
-//     <div className="min-h-screen flex flex-col bg-gray-50">
-//       <header className="p-4 border-b bg-white">Header do Dashboard</header>
-//       <main className="flex flex-col p-6 max-w-5xl mx-auto w-full">
-//         {children}
-//       </main>
-//     </div>
-//   );
-// }

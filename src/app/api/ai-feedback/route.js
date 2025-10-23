@@ -2,72 +2,72 @@ import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(req) {
-    try {
-        console.log("Recebendo requisição de feedback...");
+  try {
+    console.log("Recebendo requisição de feedback...");
 
-        const { resultData } = await req.json();
+    const { resultData } = await req.json();
 
-        if (!resultData) {
-            console.error("Erro: Nenhum resultado foi enviado.");
-            return NextResponse.json(
-                { error: "Resultado não enviado" },
-                { status: 400 }
-            );
-        }
+    if (!resultData) {
+      console.error("Erro: Nenhum resultado foi enviado.");
+      return NextResponse.json(
+        { error: "Resultado não enviado" },
+        { status: 400 }
+      );
+    }
 
-        console.log("Dados do resultado recebidos:", {
-            score: resultData.score,
-            totalQuestions: resultData.summary?.totalQuestions,
-        });
+    console.log("Dados do resultado recebidos:", {
+      score: resultData.score,
+      totalQuestions: resultData.summary?.totalQuestions,
+    });
 
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) {
-            console.error("Erro: API Key do Gemini não configurada.");
-            return NextResponse.json(
-                { error: "API Key do Gemini não configurada" },
-                { status: 500 }
-            );
-        }
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.error("Erro: API Key do Gemini não configurada.");
+      return NextResponse.json(
+        { error: "API Key do Gemini não configurada" },
+        { status: 500 }
+      );
+    }
 
-        console.log("Gerando feedback personalizado...");
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    console.log("Gerando feedback personalizado...");
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-        // Construir o prompt detalhado para análise
-        const prompt = `
+    // Construir o prompt detalhado para análise
+    const prompt = `
             Você é um Tech Recruiter sênior especializado em análise de desempenho em entrevistas. Analise os resultados do quiz abaixo e forneça um feedback construtivo e personalizado **EM FORMATO MARKDOWN**.
 
             **DADOS DO QUIZ:**
             - **Pontuação:** ${resultData.score?.correct || 0}/${
-                        resultData.score?.total || 0
-                    } (${resultData.score?.percentage || 0}%)
+      resultData.score?.total || 0
+    } (${resultData.score?.percentage || 0}%)
             - **Total de questões:** ${resultData.summary?.totalQuestions || 0}
             - **Respostas corretas:** ${resultData.summary?.correctAnswers || 0}
             - **Respostas erradas:** ${resultData.summary?.wrongAnswers || 0}
 
             **QUESTÕES DETALHADAS:**
             ${
-                resultData.questions
-                    ? resultData.questions
-                        .map(
-                            (q, index) => `
+              resultData.questions
+                ? resultData.questions
+                    .map(
+                      (q, index) => `
             **Questão ${q.questionNumber}:**
             - **Pergunta:** ${q.questionText}
             - **Resposta do candidato:** ${
-                                q.userAnswer !== undefined
-                                    ? `Alternativa ${String.fromCharCode(
-                                            65 + q.userAnswer
-                                        )} - ${q.alternatives?.[q.userAnswer] || "N/A"}`
-                                    : "Não respondida"
-                            }
+              q.userAnswer !== undefined
+                ? `Alternativa ${String.fromCharCode(65 + q.userAnswer)} - ${
+                    q.alternatives?.[q.userAnswer] || "N/A"
+                  }`
+                : "Não respondida"
+            }
             - **Resposta correta:** Alternativa ${String.fromCharCode(
-                                65 + q.correctAnswer
-                            )} - ${q.alternatives?.[q.correctAnswer] || "N/A"}
+              65 + q.correctAnswer
+            )} - ${q.alternatives?.[q.correctAnswer] || "N/A"}
             - **Status:** ${q.isCorrect ? "✅ CORRETA" : "❌ ERRADA"}
             `
-                        )
-                        .join("\n")
-                    : "Nenhuma questão disponível"
+                    )
+                    .join("\n")
+                : "Nenhuma questão disponível"
             }
 
             **SUA TAREFA:**
@@ -121,29 +121,29 @@ export async function POST(req) {
             **IDIOMA:** Português brasileiro
         `;
 
-        const result = await model.generateContent(prompt);
+    const result = await model.generateContent(prompt);
 
-        console.log("Feedback recebido do Gemini. Processando...");
+    console.log("Feedback recebido do Gemini. Processando...");
 
-        const feedback = await result.response.text();
+    const feedback = await result.response.text();
 
-        console.log("Feedback gerado com sucesso.");
+    console.log("Feedback gerado com sucesso.");
 
-        return NextResponse.json(
-            {
-                success: true,
-                feedback: feedback,
-            },
-            { status: 200 }
-        );
-    } catch (error) {
-        console.error("Erro ao gerar feedback:", error);
-        return NextResponse.json(
-            {
-                error: "Erro ao gerar feedback",
-                details: error.message,
-            },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json(
+      {
+        success: true,
+        feedback: feedback,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Erro ao gerar feedback:", error);
+    return NextResponse.json(
+      {
+        error: "Erro ao gerar feedback",
+        details: error.message,
+      },
+      { status: 500 }
+    );
+  }
 }

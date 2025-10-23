@@ -66,7 +66,10 @@ export default function Page() {
   return (
     <>
       <h1 className="flex items-center gap-3 text-3xl font-bold mb-1">
-        <Bookmark color="#2b7fff" /> Salvos
+        <span className="text-purple-500">
+          <Bookmark />
+        </span>
+        Salvos
       </h1>
 
       <p className="text-muted-foreground mb-6">

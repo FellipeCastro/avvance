@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useJobForm } from "@/hooks/use-job-form";
 
-import { MessageSquareText } from "lucide-react";
+import { MessageCircleQuestion } from "lucide-react";
 
 import PageTemplate from "@/components/dashboard/page-template";
 import FileInput from "@/components/ui/file-input";
@@ -53,8 +53,8 @@ export default function Page() {
 
   return (
     <PageTemplate
-      title={"Simulador de entrevista de emprego"}
-      icon={<MessageSquareText />}
+      title={"Simulador de Entrevistas"}
+      icon={<MessageCircleQuestion />}
       description={
         "Submeta um currículo e uma vaga para gerar um quiz de entrevista interativo. Responda perguntas baseadas no seu perfil e receba um score detalhado, com pontos fortes, GAPs de competência e recomendações de estudo para a vaga."
       }

@@ -33,6 +33,7 @@ import { Link2, Trash2, Star } from "lucide-react";
 
 import MarkdownComponent from "@/components/ui/markdown-component";
 import Loader from "./ui/loader";
+import CopyButton from "./ui/copy-button";
 
 const StatusMessage = ({ type, message }) => (
   <div
@@ -154,16 +155,20 @@ export default function JobCard({ job, onDelete, isSaved, children }) {
             </div>
           </CardContent>
 
-          <CardFooter className="mt-auto flex flex-wrap justify-between items-center">
+          <CardFooter className="mt-auto flex flex-wrap gap-1 justify-between items-center">
             <JobLink url={job.job_url} />
             {children}
           </CardFooter>
         </Card>
       </DialogTrigger>
 
-      <DialogContent>
+      <DialogContent
+        className={
+          "max-w-[95vw] sm:max-w-2xl md:max-w-3xl lg:max-w-4xl max-h-[80vh] rounded-2xl p-6 sm:p-8"
+        }
+      >
         <ScrollArea>
-          <div className="max-w-lg w-full max-h-[70vh] space-y-4">
+          <div className="w-full max-h-[70vh] space-y-4">
             <DialogHeader className="p-2 flex flex-col gap-4 items-center">
               {state.successMessage && (
                 <StatusMessage type="success" message={state.successMessage} />
@@ -213,6 +218,10 @@ export default function JobCard({ job, onDelete, isSaved, children }) {
                 </p>
               </div>
 
+              <CopyButton
+                buttonText={"Copiar descrição da vaga"}
+                text={job.description}
+              />
               <MarkdownComponent>{job.description}</MarkdownComponent>
             </div>
           </div>

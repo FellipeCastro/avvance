@@ -13,6 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { UserUsageChart } from "@/components/dashboard/user-usage-chart";
 
 // Gerar 30 dias de uso fictício
 const generateMonthlyUsageData = () => {
@@ -61,11 +62,11 @@ export default function Page() {
 
       {/* Gráfico de uso diário - 30 dias */}
       <section className="mt-6 space-y-6">
-        <h2 className="text-lg font-medium mb-2 flex items-center gap-2">
+        {/* <h2 className="text-lg font-medium mb-2 flex items-center gap-2">
           📊 Seu uso nos últimos 30 dias
-        </h2>
+        </h2> */}
 
-        <ChartContainer
+        {/* <ChartContainer
           config={monthlyUsageChartConfig}
           className="max-h-80 w-full"
         >
@@ -81,7 +82,9 @@ export default function Page() {
             <ChartLegend content={<ChartLegendContent />} />
             <Bar dataKey="usage" fill="#AB47BC" radius={4} />
           </BarChart>
-        </ChartContainer>
+        </ChartContainer> */}
+
+        <UserUsageChart />
       </section>
 
       {/* Grid de módulos */}

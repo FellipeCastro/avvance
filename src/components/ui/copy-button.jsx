@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Check, Copy } from "lucide-react";
 
-export default function CopyButton({ text, className }) {
+export default function CopyButton({ buttonText = "Copiar", text, className }) {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = async () => {
@@ -20,11 +20,11 @@ export default function CopyButton({ text, className }) {
     return (
         <Button onClick={handleCopy} variant="outline" className={className}>
             {copied ? (
-                <Check className="w-4 h-4 text-green-500" />
+                <Check className="w-4 h-4 text-emerald-500" />
             ) : (
                 <Copy className="w-4 h-4" />
             )}
-            {copied ? "Copiado!" : "Copiar"}
+            {copied ? "Copiado!" : buttonText}
         </Button>
     );
 }

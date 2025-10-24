@@ -52,7 +52,9 @@ export default function SavedJobs() {
           <Button>Vagas Salvas</Button>
         </DialogTrigger>
 
-        <DialogContent className={"h-7xl max-h-[75vh] min-w-6xl"}>
+        <DialogContent
+          className={"h-7xl max-h-[75vh] min-w-6xl flex-wrap flex"}
+        >
           <DialogTitle>Vagas Salvas</DialogTitle>
           <Separator />
 
@@ -62,10 +64,8 @@ export default function SavedJobs() {
           <ScrollArea className={"h-[60vh]"}>
             <div className="grid grid-cols-4 gap-3">
               {jobs &&
-                jobs.map((job) => (
-                  <JobCard job={job} key={job.job_id}>
-                    <Button className={"mt-5"}>Selecionar</Button>
-                  </JobCard>
+                jobs.map((job, index) => (
+                  <JobCard job={job} key={`${job.job_id}${index}`}></JobCard>
                 ))}
             </div>
           </ScrollArea>

@@ -101,9 +101,13 @@ export default function CvCard({ cv, onDelete }) {
           </CardFooter>
         </Card>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent
+        className={
+          "max-w-[95vw] sm:max-w-2xl md:max-w-3xl lg:max-w-4xl max-h-[80vh] rounded-2xl p-6 sm:p-8"
+        }
+      >
         <ScrollArea className="p-3">
-          <div className="max-w-lg w-full max-h-[70vh] space-y-4">
+          <div className="w-full max-h-[70vh] space-y-4">
             <DialogHeader className="p-2 flex flex-col gap-4 items-center">
               <div className="flex gap-2 justify-center mb-1">
                 <Dialog>
